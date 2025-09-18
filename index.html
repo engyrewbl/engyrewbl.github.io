@@ -11,7 +11,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+    <!-- Font Awesome para íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
         :root {
             --primary: 142 76% 36%;
@@ -113,9 +115,12 @@
             padding: 0.5rem;
         }
 
-        /* Hero Section */
+        /* Seccion del fondo del titulo */
         .hero {
-            background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
+            background-image: url('1.jpg'); /* Imagen base (primera imagen) */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -131,15 +136,56 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-image: url('https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
-            background-size: cover;
+            background-image: url('2.png'); /* Segunda imagen (logo) */
+            background-size: contain;
             background-position: center;
-            opacity: 0.2;
+            background-repeat: no-repeat;
+            opacity: 0; /* Empieza invisible */
+            animation: fadeInOut 10s infinite ease-in-out; /* Animación de cambio suave */
+            z-index: 1;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%); /* Degradado con variables */
+            opacity: 0.4; /* Semi-transparente */
+            z-index: 2;
+        }
+
+        /* Animación para la simulación de cambio (fade entre imágenes) */
+        @keyframes fadeInOut {
+            0%, 100% {
+                opacity: 0; /* Imagen 2 invisible (muestra imagen 1) */
+            }
+            50% {
+                opacity: 1; /* Imagen 2 visible (cambia a imagen 2) */
+            }
+        }
+
+        /* Ajustes para pantallas pequeñas (móviles) */
+        @media (max-width: 768px) {
+            .hero::before {
+                background-size: 80%; /* Reduce el tamaño del logo en móviles */
+                background-position: center center;
+            }
+        }
+
+        /* Ajustes para pantallas muy pequeñas */
+        @media (max-width: 480px) {
+            .hero::before {
+                background-size: 60%; /* Más pequeño para pantallas muy pequeñas */
+                background-position: center center;
+            }
         }
 
         .hero-content {
             position: relative;
-            z-index: 2;
+            z-index: 10; /* Aumentado para asegurar clics en botones */
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 1rem;
@@ -150,18 +196,33 @@
             font-weight: bold;
             margin-bottom: 1rem;
             line-height: 1.2;
+            text-shadow: 
+                -1px -1px 0 black,  
+                 1px -1px 0 black,
+                -1px  1px 0 black,
+                 1px  1px 0 black;
         }
 
         .hero .subtitle {
             font-size: clamp(1rem, 4vw, 1.5rem);
             margin-bottom: 0.5rem;
             color: hsl(var(--accent));
+            text-shadow: 
+                -1px -1px 0 black,  
+                 1px -1px 0 black,
+                -1px  1px 0 black,
+                 1px  1px 0 black;
         }
 
         .hero .description {
             font-size: clamp(0.9rem, 3vw, 1.2rem);
             margin-bottom: 2rem;
             opacity: 0.9;
+            text-shadow: 
+                -0.5px -0.5px 0 black,  
+                 0.5px -0.5px 0 black,
+                -0.5px  0.5px 0 black,
+                 0.5px  0.5px 0 black;
         }
 
         .btn {
@@ -243,7 +304,7 @@
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         }
 
-        /* Gallery */
+        /* Galeria de fotos */
         .gallery-item {
             position: relative;
             overflow: hidden;
@@ -275,6 +336,79 @@
             font-size: clamp(1.8rem, 5vw, 2.5rem);
             font-weight: bold;
             color: hsl(var(--primary));
+        }
+
+        /* Activities Section */
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .activity {
+            background: hsl(var(--background));
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid hsl(var(--primary));
+        }
+
+        .activity-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .activity-icon {
+            font-size: 2rem;
+            color: hsl(var(--primary));
+        }
+
+        .activity h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: hsl(var(--foreground));
+        }
+
+        .activity-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .status-completed {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-progress {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-planned {
+            background: hsl(var(--muted));
+            color: hsl(var(--muted-foreground));
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: hsl(var(--muted));
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
+            transition: width 1s ease;
         }
 
         /* Survey Section */
@@ -372,6 +506,10 @@
             .stats {
                 grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
             }
+
+            .activities-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 480px) {
@@ -407,19 +545,31 @@
             margin: 0 auto 1rem;
             color: hsl(var(--primary));
         }
+
+        /* Fade-in animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body>
     <!-- Header -->
     <header class="header">
         <div class="header-content">
-            <div class="logo">Eficiencia Energética</div>
+            <div class="logo">Engyrewbl</div>
             <button class="menu-toggle" aria-label="Toggle menu">☰</button>
             <nav class="nav">
                 <a href="#inicio">Inicio</a>
                 <a href="#proyecto">Proyecto</a>
                 <a href="#galeria">Galería</a>
-                <a href="#participar">Participar</a>
+                <a href="#actividades">Actividades</a>
                 <a href="#contacto">Contacto</a>
             </nav>
         </div>
@@ -435,7 +585,7 @@
             <p class="description">en Viviendas de la Urb. Santa Isabel mediante Campañas de Educación Ambiental</p>
             <div style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
                 <a href="#proyecto" class="btn btn-primary">Conocer el Proyecto</a>
-                <a href="#participar" class="btn btn-secondary">Participar Ahora</a>
+                <a href="#actividades" class="btn btn-secondary">Participar Ahora</a>
             </div>
         </div>
     </section>
@@ -443,13 +593,13 @@
     <!-- Project Section -->
     <section id="proyecto" class="section">
         <div class="container">
-            <h2 class="section-title">Nuestro Proyecto</h2>
-            <p class="section-subtitle">
+            <h2 class="section-title fade-in">Nuestro Proyecto</h2>
+            <p class="section-subtitle fade-in">
                 Una iniciativa de investigación-acción que busca transformar los hábitos de consumo energético 
                 en la Urbanización Santa Isabel a través de la educación ambiental y la participación comunitaria.
             </p>
 
-            <div class="card" style="margin-bottom: 2rem;">
+            <div class="card fade-in" style="margin-bottom: 2rem;">
                 <div class="grid grid-2">
                     <div>
                         <h3 style="color: hsl(var(--primary)); font-size: 1.5rem; margin-bottom: 1rem;">Propósito del Proyecto</h3>
@@ -478,7 +628,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-3">
+            <div class="grid grid-3 fade-in">
                 <div class="card" style="text-align: center;">
                     <div class="feature-icon">💰</div>
                     <h3>Ahorro Económico</h3>
@@ -498,21 +648,21 @@
         </div>
     </section>
 
-    <!-- Gallery Section -->
+    <!-- Seccion de galeria -->
     <section id="galeria" class="section" style="background: hsl(var(--muted));">
         <div class="container">
-            <h2 class="section-title">Galería del Proyecto</h2>
-            <p class="section-subtitle">
+            <h2 class="section-title fade-in">Galería del Proyecto</h2>
+            <p class="section-subtitle fade-in">
                 Conoce las actividades y logros de nuestro proyecto de responsabilidad social 
                 en la Urbanización Santa Isabel.
             </p>
 
-            <div class="grid grid-3">
+            <div class="grid grid-3 fade-in">
                 <div class="card">
                     <div class="gallery-item">
                         <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Talleres Educativos" loading="lazy">
                     </div>
-                    <h3>Talleres de Educación Ambiental</h3>
+                    <h3>Talleres de Educación Energética</h3>
                     <p>Capacitación práctica sobre hábitos de ahorro de energía 👩‍🏫💡</p>
                 </div>
                 <div class="card">
@@ -538,7 +688,7 @@
                 </div>
             </div>
 
-            <div class="stats">
+            <div class="stats fade-in">
                 <div>
                     <div class="stat-number">20+</div>
                     <p>Familias Participantes</p>
@@ -556,46 +706,135 @@
     </section>
 
     <!-- Activities and Participation Section -->
-    <section id="participar" class="section">
+    <section id="actividades" class="section">
         <div class="container">
-            <div class="grid grid-2">
-                <div>
-                    <h2 style="font-size: clamp(1.8rem, 5vw, 2.5rem); margin-bottom: 1.5rem;">Actividades Realizadas</h2>
-                    <div class="card" style="margin-bottom: 1rem;">
-                        <h4>✅ Talleres de Concientización</h4>
-                        <p>Sesiones educativas sobre el uso responsable de la energía eléctrica, dirigidas a toda la familia.</p>
+            <h2 class="section-title fade-in">Actividades y Metas</h2>
+            <p class="section-subtitle fade-in">
+                Conoce las iniciativas que estamos desarrollando y los objetivos que nos hemos propuesto 
+                para transformar los hábitos energéticos en Santa Isabel.
+            </p>
+
+            <div class="activities-grid fade-in">
+                <div class="activity">
+                    <div class="activity-header">
+                        <div class="activity-icon">📚</div>
+                        <h3>Talleres de Educación Energética</h3>
                     </div>
-                    <div class="card" style="margin-bottom: 1rem;">
-                        <h4>🔄 Auditorías Energéticas</h4>
-                        <p>Evaluación personalizada del consumo energético de cada vivienda participante.</p>
-                    </div>
-                    <div class="card">
-                        <h4>✅ Campaña de Buenas Prácticas en Electrodomésticos</h4>
-                        <p>Orientación a las familias sobre el uso adecuado de refrigeradoras, lavadoras y otros equipos para reducir el consumo eléctrico en el hogar.</p>
+                    <span class="activity-status status-completed">Completado</span>
+                    <p>Sesiones educativas sobre eficiencia energética, uso de electrodomésticos y tecnologías verdes.</p>
+                    <div class="contact-item">
+                        <i class="fas fa-users"></i>
+                        <span>20 familias participantes</span>
                     </div>
                 </div>
-                <div>
-                    <h2 style="font-size: clamp(1.8rem, 5vw, 2.5rem); margin-bottom: 1.5rem;">Metas Futuras</h2>
-                    <div class="card" style="margin-bottom: 1.5rem;">
-                        <ul style="list-style: none; padding: 0;">
-                            <li style="margin-bottom: 0.75rem;">📅 Expandir el proyecto a otras urbanizaciones de la zona</li>
-                            <li style="margin-bottom: 0.75rem;">📅 Implementar sistema de monitoreo continuo del consumo</li>
-                            <li style="margin-bottom: 0.75rem;">📅 Crear red de embajadores ambientales en la comunidad</li>
-                            <li>📅 Desarrollar aplicación móvil para seguimiento personalizado</li>
-                        </ul>
+
+                <div class="activity">
+                    <div class="activity-header">
+                        <div class="activity-icon">🏠</div>
+                        <h3>Auditorías Energéticas Domiciliarias</h3>
+                    </div>
+                    <span class="activity-status status-progress">En progreso</span>
+                    <p>Evaluación personalizada del consumo eléctrico en cada hogar participante.</p>
+                    <div class="contact-item">
+                        <i class="fas fa-home"></i>
+                        <span>20 hogares evaluados</span>
+                    </div>
+                </div>
+
+
+                <div class="activity">
+                    <div class="activity-header">
+                        <div class="activity-icon">📊</div>
+                        <h3>Monitoreo de Consumo</h3>
+                    </div>
+                    <span class="activity-status status-progress">Continuo</span>
+                    <p>Seguimiento mensual de los resultados y medición del impacto del proyecto.</p>
+                    <div class="contact-item">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Toda la comunidad</span>
+                    </div>
+                </div>
+
+                <div class="activity">
+                    <div class="activity-header">
+                        <div class="activity-icon">♻️</div>
+                        <h3>Campaña de Reciclaje Electrónico</h3>
+                    </div>
+                    <span class="activity-status status-planned">Planificado</span>
+                    <p>Recolección responsable de equipos eléctricos en desuso para su reciclaje apropiado.</p>
+                    <div class="contact-item">
+                        <i class="fas fa-recycle"></i>
+                        <span>20+ familias esperadas</span>
+                    </div>
+                </div>
+
+                <div class="activity">
+                    <div class="activity-header">
+                        <div class="activity-icon">📅</div>
+                        <h3>Jornadas de Concientización</h3>
+                    </div>
+                    <span class="activity-status status-progress">Mensual</span>
+                    <p>Eventos comunitarios con expertos en sostenibilidad y medio ambiente.</p>
+                    <div class="contact-item">
+                        <i class="fas fa-calendar"></i>
+                        <span>Comunidad general</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metas del Proyecto -->
+            <div class="card fade-in" style="background: white; padding: 3rem; border-radius: 1rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);">
+                <h3 style="text-align: center; margin-bottom: 2rem; color: hsl(var(--foreground));">Metas del Proyecto</h3>
+                
+                <div class="grid grid-2">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span style="font-weight: 600;">Reducir consumo energético 30%</span>
+                            <span>83%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 83%;"></div>
+                        </div>
+                        <small style="color: hsl(var(--muted-foreground));">Meta a 1 mes</small>
                     </div>
 
-                    <!-- Survey Button -->
-                    <div class="survey-section">
-                        <h3 style="font-size: clamp(1.5rem, 4vw, 1.8rem); margin-bottom: 1rem;">¿Quieres Participar?</h3>
-                        <p style="margin-bottom: 1rem;">
-                            Tu opinión es fundamental para el éxito de este proyecto. Participa en nuestra 
-                            encuesta y ayúdanos a crear un futuro más sostenible para nuestra comunidad.
-                        </p>
-                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeXI2HAs2kX74P5KkGsw5FERGXF7UO_sZ-UkRGHHC__T3_duw/viewform?usp=header" class="survey-btn" target="_blank">
-                            Participa en la Encuesta
-                        </a>
+                    <div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span style="font-weight: 600;">Capacitar 30 familias</span>
+                            <span>67%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 67%;"></div>
+                        </div>
+                        <small style="color: hsl(var(--muted-foreground));">Meta a 1 mes</small>
                     </div>
+
+                    
+
+                    <div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span style="font-weight: 600;">24 hogares con tecnología eficiente</span>
+                            <span>45%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 45%;"></div>
+                        </div>
+                        <small style="color: hsl(var(--muted-foreground));">Meta a 14 meses</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Call to Action -->
+            <div class="survey-section fade-in">
+                <h3 style="font-size: clamp(1.5rem, 4vw, 1.8rem); margin-bottom: 1rem;">¿Quieres ser parte del cambio?</h3>
+                <p style="margin-bottom: 1rem;">
+                    Únete a nuestra iniciativa y ayuda a crear un futuro más sostenible para Santa Isabel. 
+                    Tu participación puede marcar la diferencia.
+                </p>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeXI2HAs2kX74P5KkGsw5FERGXF7UO_sZ-UkRGHHC__T3_duw/viewform?usp=header" target="_blank" class="survey-btn">
+                        Participa en la Encuesta
+                    </a>
                 </div>
             </div>
         </div>
@@ -670,7 +909,8 @@
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
+                const targetId = this.getAttribute('href');
+                const target = document.querySelector(targetId);
                 if (target) {
                     target.scrollIntoView({
                         behavior: 'smooth',
@@ -714,7 +954,38 @@
                 observer.disconnect();
             }
         }, { threshold: 0.5 });
-        observer.observe(statsSection);
+        statsSection && observer.observe(statsSection);
+
+        // Intersection Observer for fade-in animation
+        const fadeInObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            fadeInObserver.observe(el);
+        });
+
+        // Animation for progress bars
+        const progressBars = document.querySelectorAll('.progress-fill');
+        const progressObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const width = entry.target.style.width;
+                    entry.target.style.width = '0%';
+                    setTimeout(() => {
+                        entry.target.style.width = width;
+                    }, 200);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        progressBars.forEach(bar => {
+            progressObserver.observe(bar);
+        });
     </script>
 </body>
 </html>
