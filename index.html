@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -10,7 +9,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <!-- Font Awesome para íconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
@@ -19,6 +18,7 @@
         --primary: 142 76% 36%;
         --primary-foreground: 0 0% 100%;
         --primary-light: 142 50% 85%;
+        --primary-dark: 142 76% 26%;
         --secondary: 199 89% 48%;
         --secondary-foreground: 0 0% 100%;
         --secondary-light: 199 50% 90%;
@@ -45,6 +45,7 @@
         line-height: 1.6;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        overflow-x: hidden;
     }
 
     html {
@@ -71,6 +72,13 @@
         right: 0;
         z-index: 1000;
         border-bottom: 1px solid hsl(var(--border));
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+    }
+
+    .header.scrolled {
+        background: rgba(255, 255, 255, 0.98);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
 
     .header-content {
@@ -82,9 +90,28 @@
     }
 
     .logo {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
         font-size: clamp(1.25rem, 4vw, 1.5rem);
         font-weight: bold;
         color: hsl(var(--primary));
+        transition: transform 0.3s ease;
+    }
+
+    .logo:hover {
+        transform: scale(1.05);
+    }
+
+    .logo-img {
+        width: 50px;
+        height: 50px;
+        object-fit: contain;
+        transition: transform 0.3s ease;
+    }
+
+    .logo:hover .logo-img {
+        transform: rotate(360deg);
     }
 
     .nav {
@@ -97,8 +124,26 @@
         color: hsl(var(--foreground));
         font-weight: 500;
         font-size: clamp(0.9rem, 3vw, 1rem);
-        transition: color 0.3s ease;
+        transition: all 0.3s ease;
         padding: 0.5rem;
+        position: relative;
+    }
+
+    .nav a::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0%;
+        height: 3px;
+        background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--secondary)));
+        transition: width 0.3s ease;
+        border-radius: 2px;
+    }
+
+    .nav a:hover::after {
+        width: 80%;
     }
 
     .nav a:hover {
@@ -113,21 +158,27 @@
         color: hsl(var(--foreground));
         cursor: pointer;
         padding: 0.5rem;
+        transition: transform 0.3s ease;
     }
 
-    /* Seccion del fondo del titulo */
+    .menu-toggle:hover {
+        transform: scale(1.1);
+    }
+
+    /* Hero Section - Mejorado */
     .hero {
-        background-image: url('1.jpg'); /* Imagen base (primera imagen) */
+        background-image: url('1.jpg');
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
+        background-attachment: fixed;
         min-height: 100vh;
         display: flex;
         align-items: center;
         color: white;
         position: relative;
         overflow: hidden;
-        margin-top: 0; /* Aseguramos que no haya margen por defecto */
+        margin-top: 0;
     }
 
     .hero::before {
@@ -137,12 +188,12 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background-image: url('2.png'); /* Segunda imagen (logo) */
+        background-image: url('2.png');
         background-size: contain;
         background-position: center;
         background-repeat: no-repeat;
-        opacity: 0; /* Empieza invisible */
-        animation: fadeInOut 10s infinite ease-in-out; /* Animación de cambio suave */
+        opacity: 0;
+        animation: fadeInOut 10s infinite ease-in-out;
         z-index: 1;
     }
 
@@ -153,140 +204,310 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%); /* Degradado con variables */
-        opacity: 0.4; /* Semi-transparente */
+        background: linear-gradient(135deg, hsl(var(--primary) / 0.7) 0%, hsl(var(--secondary) / 0.7) 100%);
         z-index: 2;
     }
 
-    /* Animación para la simulación de cambio (fade entre imágenes) */
     @keyframes fadeInOut {
-        0%, 100% {
-            opacity: 0; /* Imagen 2 invisible (muestra imagen 1) */
-        }
-        50% {
-            opacity: 1; /* Imagen 2 visible (cambia a imagen 2) */
-        }
-    }
-
-    /* Ajustes para pantallas pequeñas (móviles) */
-    @media (max-width: 768px) {
-        .hero {
-            margin-top: 80px; /* Margen superior para empujar el hero debajo del encabezado fijo */
-            min-height: calc(100vh - 80px); /* Ajusta la altura para compensar el margen */
-        }
-
-        .hero::before {
-            background-size: 80%; /* Reduce el tamaño del logo en móviles */
-            background-position: center center;
-        }
-
-        .hero-content {
-            padding-top: 2rem; /* Añade espacio superior para el título */
-            text-align: center;
-        }
-    }
-
-    /* Ajustes para pantallas muy pequeñas */
-    @media (max-width: 480px) {
-        .hero {
-            margin-top: 80px; /* Mantener el margen para el encabezado */
-            min-height: calc(100vh - 80px); /* Ajusta la altura */
-        }
-
-        .hero::before {
-            background-size: 60%; /* Más pequeño para pantallas muy pequeñas */
-            background-position: center center;
-        }
-
-        .hero-content {
-            padding-top: 1.5rem; /* Ajuste para pantallas muy pequeñas */
-        }
+        0%, 100% { opacity: 0; }
+        50% { opacity: 1; }
     }
 
     .hero-content {
         position: relative;
-        z-index: 10; /* Aumentado para asegurar clics en botones */
+        z-index: 10;
         max-width: 1200px;
         margin: 0 auto;
         padding: 0 1rem;
+        animation: heroFadeIn 1s ease-out;
+    }
+
+    @keyframes heroFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .hero-badge {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        padding: 0.5rem 1.5rem;
+        border-radius: 2rem;
+        font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% {
+            transform: scale(1);
+            box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+        }
+        50% {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0);
+        }
     }
 
     .hero h1 {
-        font-size: clamp(2rem, 6vw, 3.5rem);
-        font-weight: bold;
-        margin-bottom: 1rem;
-        line-height: 1.2;
+        font-size: clamp(2.5rem, 7vw, 4.5rem);
+        font-weight: 900;
+        margin-bottom: 1.5rem;
+        line-height: 1.1;
         text-shadow: 
-            -1px -1px 0 black,  
-             1px -1px 0 black,
-            -1px  1px 0 black,
-             1px  1px 0 black;
+            0 2px 10px rgba(0, 0, 0, 0.3),
+            0 0 30px rgba(255, 255, 255, 0.1);
+        animation: titleSlideIn 1s ease-out 0.2s both;
     }
 
-    .hero .subtitle {
-        font-size: clamp(1rem, 4vw, 1.5rem);
-        margin-bottom: 0.5rem;
+    @keyframes titleSlideIn {
+        from {
+            opacity: 0;
+            transform: translateX(-50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .hero-highlight {
+        display: block;
         color: hsl(var(--accent));
+        font-size: clamp(1.8rem, 5vw, 3.5rem);
+        margin: 0.5rem 0;
         text-shadow: 
-            -1px -1px 0 black,  
-             1px -1px 0 black,
-            -1px  1px 0 black,
-             1px  1px 0 black;
+            0 2px 10px rgba(0, 0, 0, 0.5),
+            0 0 20px rgba(234, 179, 8, 0.3);
+        animation: glow 2s ease-in-out infinite;
+    }
+
+    @keyframes glow {
+        0%, 100% {
+            text-shadow: 
+                0 2px 10px rgba(0, 0, 0, 0.5),
+                0 0 20px rgba(234, 179, 8, 0.3);
+        }
+        50% {
+            text-shadow: 
+                0 2px 10px rgba(0, 0, 0, 0.5),
+                0 0 40px rgba(234, 179, 8, 0.6);
+        }
+    }
+
+    .hero-subtitle {
+        font-size: clamp(1.5rem, 4vw, 2.5rem);
+        margin: 1rem 0;
+        font-weight: 700;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     }
 
     .hero .description {
-        font-size: clamp(0.9rem, 3vw, 1.2rem);
-        margin-bottom: 2rem;
-        opacity: 0.9;
-        text-shadow: 
-            -0.5px -0.5px 0 black,  
-             0.5px -0.5px 0 black,
-            -0.5px  0.5px 0 black,
-             0.5px  0.5px 0 black;
+        font-size: clamp(1rem, 3vw, 1.3rem);
+        margin-bottom: 2.5rem;
+        opacity: 0.95;
+        max-width: 800px;
+        text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        animation: fadeInUp 1s ease-out 0.4s both;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 0.95;
+            transform: translateY(0);
+        }
+    }
+
+    .hero-buttons {
+        margin-top: 2rem;
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        animation: fadeInUp 1s ease-out 0.6s both;
     }
 
     .btn {
-        display: inline-block;
-        padding: 1rem 2rem;
-        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 1.25rem 2.5rem;
+        font-weight: 700;
         text-decoration: none;
         border-radius: 0.75rem;
         transition: all 0.3s ease;
         font-family: 'Poppins', sans-serif;
         touch-action: manipulation;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        transition: left 0.5s ease;
+    }
+
+    .btn:hover::before {
+        left: 100%;
     }
 
     .btn-primary {
-        background: hsl(var(--primary));
+        background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-dark)) 100%);
         color: hsl(var(--primary-foreground));
+        box-shadow: 0 4px 15px rgba(142, 168, 91, 0.4);
     }
 
     .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(142, 168, 91, 0.5);
     }
 
     .btn-secondary {
-        background: rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.15);
         color: white;
-        border: 2px solid rgba(255, 255, 255, 0.3);
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(10px);
     }
 
     .btn-secondary:hover {
-        background: rgba(255, 255, 255, 0.3);
-        border-color: rgba(255, 255, 255, 0.5);
+        background: rgba(255, 255, 255, 0.25);
+        border-color: rgba(255, 255, 255, 0.6);
+        transform: translateY(-3px);
+    }
+
+    .btn-video {
+        background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+        color: white;
+        box-shadow: 0 4px 15px rgba(255, 0, 0, 0.4);
+    }
+
+    .btn-video:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(255, 0, 0, 0.5);
+    }
+
+    /* Video Section - NUEVO */
+    .video-section {
+        padding: clamp(3rem, 8vw, 6rem) 0;
+        background: linear-gradient(135deg, hsl(var(--primary-light)) 0%, hsl(var(--secondary-light)) 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .video-section::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, rgba(142, 168, 91, 0.1) 0%, transparent 70%);
+        border-radius: 50%;
+    }
+
+    .video-section::after {
+        content: '';
+        position: absolute;
+        bottom: -50%;
+        left: -10%;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, rgba(52, 152, 219, 0.1) 0%, transparent 70%);
+        border-radius: 50%;
+    }
+
+    .video-container {
+        position: relative;
+        max-width: 900px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 1.5rem;
+        padding: 2rem;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        z-index: 1;
+    }
+
+    .video-wrapper {
+        position: relative;
+        padding-bottom: 56.25%;
+        height: 0;
+        overflow: hidden;
+        border-radius: 1rem;
+        background: #000;
+    }
+
+    .video-wrapper iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+    .video-info {
+        margin-top: 1.5rem;
+        text-align: center;
+    }
+
+    .video-info h3 {
+        font-size: clamp(1.3rem, 4vw, 1.8rem);
+        color: hsl(var(--primary));
+        margin-bottom: 0.5rem;
+    }
+
+    .video-info p {
+        color: hsl(var(--muted-foreground));
+        font-size: clamp(0.9rem, 3vw, 1.1rem);
     }
 
     /* Sections */
     .section {
         padding: clamp(3rem, 8vw, 5rem) 0;
+        position: relative;
     }
 
     .section-title {
         text-align: center;
-        font-size: clamp(1.8rem, 5vw, 3rem);
+        font-size: clamp(2rem, 5vw, 3rem);
         margin-bottom: 1rem;
         color: hsl(var(--foreground));
+        font-weight: 800;
+        position: relative;
+        display: block;
+        width: 100%;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60%;
+        height: 4px;
+        background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--secondary)));
+        border-radius: 2px;
     }
 
     .section-subtitle {
@@ -295,19 +516,38 @@
         color: hsl(var(--muted-foreground));
         max-width: 800px;
         margin: 0 auto clamp(1.5rem, 4vw, 3rem);
+        line-height: 1.8;
     }
 
     .card {
         background: white;
         border-radius: 1rem;
         padding: 1.5rem;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         border: 1px solid hsl(var(--border));
         transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--secondary)));
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+    }
+
+    .card:hover::before {
+        transform: scaleX(1);
     }
 
     .card:hover {
-        transform: translateY(-5px);
+        transform: translateY(-8px);
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
     }
 
@@ -324,7 +564,7 @@
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     }
 
-    /* Galeria de fotos */
+    /* Gallery */
     .gallery-item {
         position: relative;
         overflow: hidden;
@@ -336,29 +576,62 @@
         width: 100%;
         height: 300px;
         object-fit: cover;
-        transition: transform 0.3s ease;
+        transition: transform 0.5s ease;
     }
 
     .gallery-item:hover img {
-        transform: scale(1.05);
+        transform: scale(1.1);
     }
 
-    /* Statistics */
+    /* Statistics - Mejorado */
     .stats {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 2rem;
         text-align: center;
-        margin-top: 2rem;
+        margin-top: 3rem;
+        padding: 2rem;
+        background: white;
+        border-radius: 1rem;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-item {
+        position: relative;
+        padding: 1rem;
+    }
+
+    .stat-item::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 20%;
+        height: 60%;
+        width: 1px;
+        background: linear-gradient(180deg, transparent, hsl(var(--border)), transparent);
+    }
+
+    .stat-item:last-child::after {
+        display: none;
     }
 
     .stat-number {
-        font-size: clamp(1.8rem, 5vw, 2.5rem);
-        font-weight: bold;
-        color: hsl(var(--primary));
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: 900;
+        background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
     }
 
-    /* Activities Section */
+    .stat-label {
+        font-size: clamp(0.9rem, 2.5vw, 1rem);
+        color: hsl(var(--muted-foreground));
+        font-weight: 600;
+    }
+
+    /* Activities Section - Mejorado */
     .activities-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -367,11 +640,18 @@
     }
 
     .activity {
-        background: hsl(var(--background));
+        background: white;
         padding: 2rem;
         border-radius: 1rem;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         border-left: 4px solid hsl(var(--primary));
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .activity:hover {
+        transform: translateX(5px);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
     }
 
     .activity-header {
@@ -382,105 +662,302 @@
     }
 
     .activity-icon {
-        font-size: 2rem;
-        color: hsl(var(--primary));
+        font-size: 2.5rem;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
     }
 
     .activity h3 {
         font-size: 1.25rem;
-        font-weight: 600;
+        font-weight: 700;
         color: hsl(var(--foreground));
     }
 
     .activity-status {
         display: inline-block;
-        padding: 0.25rem 0.75rem;
+        padding: 0.35rem 1rem;
         border-radius: 1rem;
-        font-size: 0.8rem;
-        font-weight: 600;
+        font-size: 0.85rem;
+        font-weight: 700;
         margin-bottom: 1rem;
     }
 
     .status-completed {
-        background: #dcfce7;
+        background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
         color: #166534;
     }
 
     .status-progress {
-        background: #dbeafe;
+        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
         color: #1e40af;
     }
 
     .status-planned {
-        background: hsl(var(--muted));
+        background: linear-gradient(135deg, hsl(var(--muted)) 0%, hsl(var(--border)) 100%);
         color: hsl(var(--muted-foreground));
     }
 
     .progress-bar {
         width: 100%;
-        height: 8px;
+        height: 10px;
         background: hsl(var(--muted));
-        border-radius: 4px;
+        border-radius: 5px;
         overflow: hidden;
         margin: 1rem 0;
+        position: relative;
     }
 
     .progress-fill {
         height: 100%;
         background: linear-gradient(90deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
-        transition: width 1s ease;
+        transition: width 1.5s ease;
+        position: relative;
+        overflow: hidden;
     }
 
-    /* Survey Section */
+    .progress-fill::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+    }
+
+    /* Survey Section - Mejorado */
     .survey-section {
         background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
         color: white;
         text-align: center;
-        padding: 2rem;
-        border-radius: 1rem;
-        margin: 2rem 0;
+        padding: 3rem 2rem;
+        border-radius: 1.5rem;
+        margin: 3rem 0;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    }
+
+    .survey-section::before {
+        content: '💡';
+        position: absolute;
+        top: -20px;
+        right: -20px;
+        font-size: 200px;
+        opacity: 0.1;
+        transform: rotate(-15deg);
+    }
+
+    .survey-section h3 {
+        font-size: clamp(1.5rem, 4vw, 2rem);
+        margin-bottom: 1rem;
+        font-weight: 800;
+        position: relative;
+        z-index: 1;
+    }
+
+    .survey-section p {
+        margin-bottom: 1.5rem;
+        font-size: clamp(1rem, 3vw, 1.2rem);
+        opacity: 0.95;
+        position: relative;
+        z-index: 1;
     }
 
     .survey-btn {
         background: white;
         color: hsl(var(--primary));
-        padding: 1rem 2rem;
+        padding: 1.25rem 2.5rem;
         border-radius: 0.75rem;
-        font-weight: bold;
+        font-weight: 800;
         text-decoration: none;
-        display: inline-block;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
         margin-top: 1rem;
         transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+        position: relative;
+        z-index: 1;
     }
 
     .survey-btn:hover {
         transform: scale(1.05);
-        box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3);
+        box-shadow: 0 10px 30px rgba(255, 255, 255, 0.4);
     }
 
-    /* Footer */
+    /* Feature Icon - Mejorado */
+    .feature-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, hsl(var(--primary-light)) 0%, hsl(var(--secondary-light)) 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        font-size: 1.8rem;
+        box-shadow: 0 4px 15px rgba(142, 168, 91, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    .card:hover .feature-icon {
+        transform: scale(1.1) rotate(5deg);
+    }
+
+    /* Footer - Mejorado */
     .footer {
-        background: hsl(var(--foreground));
+        background: linear-gradient(135deg, hsl(var(--foreground)) 0%, hsl(210 24% 10%) 100%);
         color: hsl(var(--background));
-        padding: 2rem 0;
+        padding: 3rem 0 1.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .footer::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--secondary)), hsl(var(--accent)));
     }
 
     .footer-content {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1.5rem;
-        margin-bottom: 1.5rem;
+        gap: 2rem;
+        margin-bottom: 2rem;
     }
 
     .contact-item {
         display: flex;
         align-items: center;
         gap: 0.75rem;
-        margin-bottom: 0.75rem;
+        margin-bottom: 1rem;
+        transition: transform 0.3s ease;
+    }
+
+    .contact-item:hover {
+        transform: translateX(5px);
+    }
+
+    .contact-item i {
+        font-size: 1.2rem;
+        color: hsl(var(--primary));
+    }
+
+    /* Fade-in animation */
+    .fade-in {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s ease;
+    }
+
+    .fade-in.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Meeting Section - NUEVA */
+    .meeting-section {
+        padding: clamp(3rem, 8vw, 5rem) 0;
+        background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .meeting-card {
+        max-width: 1000px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 1.5rem;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        border: 3px solid hsl(var(--primary));
+    }
+
+    .meeting-header {
+        background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+    }
+
+    .meeting-header h3 {
+        font-size: clamp(1.5rem, 4vw, 2rem);
+        margin-bottom: 0.5rem;
+        font-weight: 800;
+    }
+
+    .meeting-date {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(255, 255, 255, 0.2);
+        padding: 0.75rem 1.5rem;
+        border-radius: 2rem;
+        font-size: clamp(1rem, 3vw, 1.2rem);
+        font-weight: 700;
+        margin-top: 1rem;
+        backdrop-filter: blur(10px);
+    }
+
+    .meeting-content {
+        padding: 2rem;
+    }
+
+    .meeting-image-container {
+        position: relative;
+        width: 100%;
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        margin-bottom: 1.5rem;
+    }
+
+    .meeting-image-container img {
+        width: 100%;
+        height: auto;
+        display: block;
+        object-fit: contain;
+        max-height: 600px;
+    }
+
+    .meeting-description {
+        text-align: center;
+        padding: 1.5rem;
+        background: linear-gradient(135deg, hsl(var(--primary-light)) 0%, hsl(var(--secondary-light)) 100%);
+        border-radius: 1rem;
+        margin-top: 1.5rem;
+    }
+
+    .meeting-description h4 {
+        color: hsl(var(--primary));
+        font-size: clamp(1.2rem, 3vw, 1.5rem);
+        margin-bottom: 1rem;
+        font-weight: 700;
+    }
+
+    .meeting-description p {
+        color: hsl(var(--foreground));
+        font-size: clamp(0.95rem, 3vw, 1.1rem);
+        line-height: 1.8;
     }
 
     /* Mobile Responsive */
     @media (max-width: 768px) {
+        .logo-img {
+            width: 32px;
+            height: 32px;
+        }
+
         .nav {
             display: none;
             flex-direction: column;
@@ -502,17 +979,28 @@
         }
 
         .hero {
-            min-height: 70vh;
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+            background-attachment: scroll;
+        }
+
+        .hero::before {
+            background-size: 80%;
+            background-position: center center;
         }
 
         .hero-content {
-            padding: 0 1rem;
+            padding: 2rem 1rem;
             text-align: center;
         }
 
+        .hero-buttons {
+            justify-content: center;
+        }
+
         .btn {
-            padding: 0.75rem 1.5rem;
-            font-size: 0.9rem;
+            padding: 1rem 1.75rem;
+            font-size: 0.95rem;
         }
 
         .grid-2, .grid-3 {
@@ -526,16 +1014,42 @@
 
         .stats {
             grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1rem;
+            padding: 1.5rem;
+        }
+
+        .stat-item::after {
+            display: none;
         }
 
         .activities-grid {
             grid-template-columns: 1fr;
         }
+
+        .video-container {
+            padding: 1rem;
+        }
+
+        .meeting-content {
+            padding: 1rem;
+        }
+
+        .meeting-image-container img {
+            max-height: 400px;
+        }
     }
 
     @media (max-width: 480px) {
+        .meeting-header {
+            padding: 1.5rem 1rem;
+        }
+        .logo-img {
+            width: 28px;
+            height: 28px;
+        }
+
         .hero h1 {
-            font-size: clamp(1.5rem, 5vw, 2rem);
+            font-size: clamp(1.8rem, 6vw, 2.5rem);
         }
 
         .section {
@@ -545,9 +1059,13 @@
         .card {
             padding: 1rem;
         }
+
+        .survey-section {
+            padding: 2rem 1rem;
+        }
     }
 
-    /* Icon styles */
+    /* Contact Item Icons */
     .icon {
         width: 24px;
         height: 24px;
@@ -555,91 +1073,114 @@
         vertical-align: middle;
     }
 
-    .feature-icon {
-        width: 48px;
-        height: 48px;
-        background: hsl(var(--primary-light));
+    /* Scroll to Top Button - NUEVO */
+    .scroll-top {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
+        color: white;
+        border: none;
         border-radius: 50%;
-        display: flex;
+        cursor: pointer;
+        display: none;
         align-items: center;
         justify-content: center;
-        margin: 0 auto 1rem;
-        color: hsl(var(--primary));
+        font-size: 1.5rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        z-index: 999;
     }
 
-    /* Fade-in animation */
-    .fade-in {
-        opacity: 0;
-        transform: translateY(30px);
-        transition: all 0.6s ease;
+    .scroll-top.visible {
+        display: flex;
     }
 
-    .fade-in.visible {
-        opacity: 1;
-        transform: translateY(0);
+    .scroll-top:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
     }
-    .logo {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem; /* Espacio entre la imagen y el texto */
-    font-size: clamp(1.25rem, 4vw, 1.5rem);
-    font-weight: bold;
-    color: hsl(var(--primary));
-}
-
-.logo-img {
-    width: 50px; /* Tamaño del logo en escritorio */
-    height: 50px;
-    object-fit: contain; /* Asegura que la imagen no se distorsione */
-}
-
-/* Ajustes para móviles */
-@media (max-width: 768px) {
-    .logo-img {
-        width: 32px; /* Tamaño más pequeño en móviles */
-        height: 32px;
-    }
-}
-
-@media (max-width: 480px) {
-    .logo-img {
-        width: 28px; /* Aún más pequeño en pantallas muy pequeñas */
-        height: 28px;
-    }
-}
-</style>
+    </style>
 </head>
 <body>
     <!-- Header -->
-    <!-- Header -->
-<header class="header">
-    <div class="header-content">
-        <div class="logo">
-            <img src="2.png" alt="Logo Engyrewbl" class="logo-img">
-            <span>Engyrewbl</span>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <img src="2.png" alt="Logo Engyrewbl" class="logo-img">
+                <span>Engyrewbl</span>
+            </div>
+            <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+            <nav class="nav">
+                <a href="#inicio">Inicio</a>
+                <a href="#video">Video</a>
+                <a href="#proyecto">Proyecto</a>
+                <a href="#galeria">Galería</a>
+                <a href="#actividades">Actividades</a>
+                <a href="#reunion">Reunión</a>
+                <a href="#contacto">Contacto</a>
+            </nav>
         </div>
-        <button class="menu-toggle" aria-label="Toggle menu">☰</button>
-        <nav class="nav">
-            <a href="#inicio">Inicio</a>
-            <a href="#proyecto">Proyecto</a>
-            <a href="#galeria">Galería</a>
-            <a href="#actividades">Actividades</a>
-            <a href="#contacto">Contacto</a>
-        </nav>
-    </div>
-</header>
+    </header>
 
     <!-- Hero Section -->
     <section id="inicio" class="hero">
         <div class="hero-content">
-            <h1>Reducción del consumo irresponsable de<br>
-                <span class="subtitle">energía eléctrica en viviendas"</span><br>
-                 de la Urb. Santa Isabel
+            <div class="hero-badge">
+                🌱 Proyecto de Responsabilidad Social 2025
+            </div>
+            <h1>
+                <span class="hero-highlight">Reducción del Consumo</span>
+                <span class="hero-subtitle">Irresponsable de Energía Eléctrica</span>
+                <span style="display: block; font-size: clamp(1.5rem, 4vw, 2.5rem); margin-top: 1rem;">
+                    en Viviendas de la Urb. Santa Isabel
+                </span>
             </h1>
-            <p class="mediante campañas de educación ambiental, 2025."</p>
-            <div style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
-                <a href="#proyecto" class="btn btn-primary">Conocer el Proyecto</a>
-                <a href="#actividades" class="btn btn-secondary">Participar Ahora</a>
+            <p class="description">
+                🎯 Mediante campañas de educación ambiental, promovemos el uso responsable 
+                de la energía eléctrica para crear un futuro más sostenible en nuestra comunidad.
+            </p>
+            <div class="hero-buttons">
+                <a href="#proyecto" class="btn btn-primary">
+                    <i class="fas fa-leaf"></i> Conocer el Proyecto
+                </a>
+                <a href="#video" class="btn btn-video">
+                    <i class="fas fa-play"></i> Ver Video
+                </a>
+                <a href="#actividades" class="btn btn-secondary">
+                    <i class="fas fa-users"></i> Participar Ahora
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Section - NUEVA -->
+    <section id="video" class="video-section">
+        <div class="container">
+            <h2 class="section-title fade-in">🎬 Conoce Nuestro Proyecto</h2>
+            <p class="section-subtitle fade-in">
+                Mira el video de presentación de nuestro proyecto de eficiencia energética 
+                y descubre cómo estamos transformando la Urbanización Santa Isabel.
+            </p>
+            
+            <div class="video-container fade-in">
+                <div class="video-wrapper">
+                    <!-- Reemplaza VIDEO_ID con el ID de tu video de YouTube -->
+                    <!-- Ejemplo: si tu URL es https://www.youtube.com/watch?v=dQw4w9WgXcQ -->
+                    <!-- entonces VIDEO_ID es: dQw4w9WgXcQ -->
+                    <iframe 
+                        src="https://www.youtube.com/embed/Xq5NK6o19pg?rel=0" 
+                        title="Video del Proyecto Engyrewbl" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="video-info">
+                    <h3>💡 Juntos por un Futuro Sostenible</h3>
+                    <p>Descubre cómo nuestra comunidad está marcando la diferencia</p>
+                </div>
             </div>
         </div>
     </section>
@@ -647,7 +1188,7 @@
     <!-- Project Section -->
     <section id="proyecto" class="section">
         <div class="container">
-            <h2 class="section-title fade-in">Nuestro Proyecto</h2>
+            <h2 class="section-title fade-in">🌟 Nuestro Proyecto</h2>
             <p class="section-subtitle fade-in">
                 Una iniciativa de investigación-acción que busca transformar los hábitos de consumo energético 
                 en la Urbanización Santa Isabel a través de la educación ambiental y la participación comunitaria.
@@ -656,27 +1197,29 @@
             <div class="card fade-in" style="margin-bottom: 2rem;">
                 <div class="grid grid-2">
                     <div>
-                        <h3 style="color: hsl(var(--primary)); font-size: 1.5rem; margin-bottom: 1rem;">Propósito del Proyecto</h3>
-                        <p style="margin-bottom: 1rem;">
-                            Nuestro proyecto tiene como objetivo principal reducir el consumo irresponsable de energía 
-                            eléctrica en las viviendas de la Urbanización Santa Isabel, promoviendo prácticas sostenibles 
+                        <h3 style="color: hsl(var(--primary)); font-size: 1.75rem; margin-bottom: 1rem; font-weight: 700;">
+                            🎯 Propósito del Proyecto
+                        </h3>
+                        <p style="margin-bottom: 1rem; line-height: 1.8;">
+                            Nuestro proyecto tiene como objetivo principal <strong>reducir el consumo irresponsable de energía 
+                            eléctrica</strong> en las viviendas de la Urbanización Santa Isabel, promoviendo prácticas sostenibles 
                             y eficientes que beneficien tanto al medio ambiente como a la economía familiar.
                         </p>
-                        <p>
-                            A través de campañas educativas, talleres participativos y seguimiento continuo, 
+                        <p style="line-height: 1.8;">
+                            A través de <strong>campañas educativas, talleres participativos</strong> y seguimiento continuo, 
                             buscamos crear una comunidad consciente y comprometida con el uso responsable de la energía.
                         </p>
                     </div>
                     <div class="grid grid-2">
-                        <div class="card" style="text-align: center; background: hsl(var(--primary-light));">
+                        <div class="card" style="text-align: center; background: linear-gradient(135deg, hsl(var(--primary-light)) 0%, #f0fdf4 100%);">
                             <div class="feature-icon">📉</div>
-                            <h4>Reducir Consumo</h4>
-                            <p>Hasta 30% menos consumo energético</p>
+                            <h4 style="font-weight: 700; margin-bottom: 0.5rem;">Reducir Consumo</h4>
+                            <p><strong>Hasta 30%</strong> menos consumo energético</p>
                         </div>
-                        <div class="card" style="text-align: center; background: hsl(var(--secondary-light));">
+                        <div class="card" style="text-align: center; background: linear-gradient(135deg, hsl(var(--secondary-light)) 0%, #eff6ff 100%);">
                             <div class="feature-icon">👥</div>
-                            <h4>Comunidad</h4>
-                            <p>Participación activa de residentes</p>
+                            <h4 style="font-weight: 700; margin-bottom: 0.5rem;">Comunidad</h4>
+                            <p>Participación <strong>activa</strong> de residentes</p>
                         </div>
                     </div>
                 </div>
@@ -685,27 +1228,27 @@
             <div class="grid grid-3 fade-in">
                 <div class="card" style="text-align: center;">
                     <div class="feature-icon">💰</div>
-                    <h3>Ahorro Económico</h3>
+                    <h3 style="font-weight: 700; margin-bottom: 1rem;">Ahorro Económico</h3>
                     <p>Reducción significativa en las facturas de electricidad de las familias participantes.</p>
                 </div>
                 <div class="card" style="text-align: center;">
                     <div class="feature-icon">🌱</div>
-                    <h3>Impacto Ambiental</h3>
+                    <h3 style="font-weight: 700; margin-bottom: 1rem;">Impacto Ambiental</h3>
                     <p>Contribución directa a la reducción de emisiones de carbono y protección del medio ambiente.</p>
                 </div>
                 <div class="card" style="text-align: center;">
                     <div class="feature-icon">🤝</div>
-                    <h3>Fortalecimiento Comunitario</h3>
+                    <h3 style="font-weight: 700; margin-bottom: 1rem;">Fortalecimiento Comunitario</h3>
                     <p>Creación de vínculos entre vecinos y desarrollo de una conciencia colectiva sostenible.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Seccion de galeria -->
-    <section id="galeria" class="section" style="background: hsl(var(--muted));">
+    <!-- Gallery Section -->
+    <section id="galeria" class="section" style="background: linear-gradient(180deg, hsl(var(--muted)) 0%, white 100%);">
         <div class="container">
-            <h2 class="section-title fade-in">Galería del Proyecto</h2>
+            <h2 class="section-title fade-in">📸 Galería del Proyecto</h2>
             <p class="section-subtitle fade-in">
                 Conoce las actividades y logros de nuestro proyecto de responsabilidad social 
                 en la Urbanización Santa Isabel.
@@ -716,51 +1259,51 @@
                     <div class="gallery-item">
                         <img src="3.jpg" alt="Talleres de Educación Energética" loading="lazy">
                     </div>
-                    <h3>Talleres de Educación Energética</h3>
+                    <h3 style="font-weight: 700; margin-bottom: 0.75rem;">Talleres de Educación Energética</h3>
                     <p>Capacitación práctica sobre hábitos de ahorro de energía 👩‍🏫💡</p>
                 </div>
                 <div class="card">
                     <div class="gallery-item">
-                        <img src="4.jpg" alt="Campaña “Un Hogar Eficiente" loading="lazy">
+                        <img src="4.jpg" alt="Campaña Un Hogar Eficiente" loading="lazy">
                     </div>
-                    <h3>Campaña “Un Hogar Eficiente”</h3>
+                    <h3 style="font-weight: 700; margin-bottom: 0.75rem;">Campaña "Un Hogar Eficiente"</h3>
                     <p>Difusión de consejos y buenas prácticas mediante materiales educativos 📢🌱</p>
                 </div>
                 <div class="card">
                     <div class="gallery-item">
                         <img src="5.jpg" alt="Diagnóstico Energético Comunitario" loading="lazy">
                     </div>
-                    <h3>Diagnóstico Energético Comunitario</h3>
+                    <h3 style="font-weight: 700; margin-bottom: 0.75rem;">Diagnóstico Energético Comunitario</h3>
                     <p>Evaluación personalizada del consumo energético en cada hogar 🏡⚡</p>
                 </div>
                 <div class="card">
                     <div class="gallery-item">
                         <img src="6.jpg" alt="Monitoreo y Retroalimentación" loading="lazy">
                     </div>
-                    <h3>Monitoreo y Retroalimentación</h3>
+                    <h3 style="font-weight: 700; margin-bottom: 0.75rem;">Monitoreo y Retroalimentación</h3>
                     <p>Seguimiento de resultados en viviendas piloto para medir el impacto 📈✅</p>
                 </div>
                 <div class="card">
                     <div class="gallery-item">
                         <img src="7.jpg" alt="Campaña de Sensibilización Infantil" loading="lazy">
                     </div>
-                    <h3>Campaña de Sensibilización Infantil</h3>
+                    <h3 style="font-weight: 700; margin-bottom: 0.75rem;">Campaña de Sensibilización Infantil</h3>
                     <p>Enseñando a los más pequeños a cuidar la energía 🎨💡</p>
                 </div>
             </div>
 
             <div class="stats fade-in">
-                <div>
+                <div class="stat-item">
                     <div class="stat-number">20+</div>
-                    <p>Familias Participantes</p>
+                    <p class="stat-label">Familias Participantes</p>
                 </div>
-                <div>
+                <div class="stat-item">
                     <div class="stat-number">25%</div>
-                    <p>Reducción Promedio</p>
+                    <p class="stat-label">Reducción Promedio</p>
                 </div>
-                <div>
+                <div class="stat-item">
                     <div class="stat-number">12</div>
-                    <p>Talleres Realizados</p>
+                    <p class="stat-label">Talleres Realizados</p>
                 </div>
             </div>
         </div>
@@ -769,7 +1312,7 @@
     <!-- Activities and Participation Section -->
     <section id="actividades" class="section">
         <div class="container">
-            <h2 class="section-title fade-in">Actividades y Metas</h2>
+            <h2 class="section-title fade-in">🚀 Actividades y Metas</h2>
             <p class="section-subtitle fade-in">
                 Conoce las iniciativas que estamos desarrollando y los objetivos que nos hemos propuesto 
                 para transformar los hábitos energéticos en Santa Isabel.
@@ -781,11 +1324,11 @@
                         <div class="activity-icon">📚</div>
                         <h3>Talleres de Educación Energética</h3>
                     </div>
-                    <span class="activity-status status-completed">Completado</span>
+                    <span class="activity-status status-completed">✓ Completado</span>
                     <p>Sesiones educativas sobre eficiencia energética, uso de electrodomésticos y tecnologías verdes.</p>
                     <div class="contact-item">
                         <i class="fas fa-users"></i>
-                        <span>20 familias participantes</span>
+                        <span><strong>20</strong> familias participantes</span>
                     </div>
                 </div>
 
@@ -794,21 +1337,20 @@
                         <div class="activity-icon">🏠</div>
                         <h3>Auditorías Energéticas Domiciliarias</h3>
                     </div>
-                    <span class="activity-status status-progress">En progreso</span>
+                    <span class="activity-status status-progress">⚡ En progreso</span>
                     <p>Evaluación personalizada del consumo eléctrico en cada hogar participante.</p>
                     <div class="contact-item">
                         <i class="fas fa-home"></i>
-                        <span>20 hogares evaluados</span>
+                        <span><strong>20</strong> hogares evaluados</span>
                     </div>
                 </div>
-
 
                 <div class="activity">
                     <div class="activity-header">
                         <div class="activity-icon">📊</div>
                         <h3>Monitoreo de Consumo</h3>
                     </div>
-                    <span class="activity-status status-progress">Continuo</span>
+                    <span class="activity-status status-progress">⚡ Continuo</span>
                     <p>Seguimiento mensual de los resultados y medición del impacto del proyecto.</p>
                     <div class="contact-item">
                         <i class="fas fa-chart-line"></i>
@@ -821,11 +1363,11 @@
                         <div class="activity-icon">♻️</div>
                         <h3>Campaña de Reciclaje Electrónico</h3>
                     </div>
-                    <span class="activity-status status-planned">Planificado</span>
+                    <span class="activity-status status-planned">📅 Planificado</span>
                     <p>Recolección responsable de equipos eléctricos en desuso para su reciclaje apropiado.</p>
                     <div class="contact-item">
                         <i class="fas fa-recycle"></i>
-                        <span>20+ familias esperadas</span>
+                        <span><strong>20+</strong> familias esperadas</span>
                     </div>
                 </div>
 
@@ -834,7 +1376,7 @@
                         <div class="activity-icon">📅</div>
                         <h3>Jornadas de Concientización</h3>
                     </div>
-                    <span class="activity-status status-progress">Mensual</span>
+                    <span class="activity-status status-progress">⚡ Mensual</span>
                     <p>Eventos comunitarios con expertos en sostenibilidad y medio ambiente.</p>
                     <div class="contact-item">
                         <i class="fas fa-calendar"></i>
@@ -843,59 +1385,104 @@
                 </div>
             </div>
 
-            <!-- Metas del Proyecto -->
-            <div class="card fade-in" style="background: white; padding: 3rem; border-radius: 1rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);">
-                <h3 style="text-align: center; margin-bottom: 2rem; color: hsl(var(--foreground));">Metas del Proyecto</h3>
+            <!-- Project Goals -->
+            <div class="card fade-in" style="background: linear-gradient(135deg, white 0%, hsl(var(--muted)) 100%); padding: 3rem; border-radius: 1.5rem; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);">
+                <h3 style="text-align: center; margin-bottom: 2.5rem; color: hsl(var(--foreground)); font-size: 2rem; font-weight: 800;">
+                    🎯 Metas del Proyecto
+                </h3>
                 
                 <div class="grid grid-2">
                     <div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                            <span style="font-weight: 600;">Reducir consumo energético 30%</span>
-                            <span>83%</span>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+                            <span style="font-weight: 700; font-size: 1.05rem;">Reducir consumo energético 30%</span>
+                            <span style="font-weight: 800; color: hsl(var(--primary)); font-size: 1.1rem;">83%</span>
                         </div>
                         <div class="progress-bar">
                             <div class="progress-fill" style="width: 83%;"></div>
                         </div>
-                        <small style="color: hsl(var(--muted-foreground));">Meta a 1 mes</small>
+                        <small style="color: hsl(var(--muted-foreground)); font-weight: 600;">📅 Meta a 1 mes</small>
                     </div>
 
                     <div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                            <span style="font-weight: 600;">Capacitar 30 familias</span>
-                            <span>67%</span>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+                            <span style="font-weight: 700; font-size: 1.05rem;">Capacitar 30 familias</span>
+                            <span style="font-weight: 800; color: hsl(var(--primary)); font-size: 1.1rem;">67%</span>
                         </div>
                         <div class="progress-bar">
                             <div class="progress-fill" style="width: 67%;"></div>
                         </div>
-                        <small style="color: hsl(var(--muted-foreground));">Meta a 1 mes</small>
+                        <small style="color: hsl(var(--muted-foreground)); font-weight: 600;">📅 Meta a 1 mes</small>
                     </div>
 
-                    
-
                     <div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                            <span style="font-weight: 600;">24 hogares con tecnología eficiente</span>
-                            <span>45%</span>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+                            <span style="font-weight: 700; font-size: 1.05rem;">26 hogares con tecnología eficiente</span>
+                            <span style="font-weight: 800; color: hsl(var(--primary)); font-size: 1.1rem;">45%</span>
                         </div>
                         <div class="progress-bar">
                             <div class="progress-fill" style="width: 45%;"></div>
                         </div>
-                        <small style="color: hsl(var(--muted-foreground));">Meta a 14 meses</small>
+                        <small style="color: hsl(var(--muted-foreground)); font-weight: 600;">📅 Meta a 1 mes</small>
                     </div>
                 </div>
             </div>
 
             <!-- Call to Action -->
             <div class="survey-section fade-in">
-                <h3 style="font-size: clamp(1.5rem, 4vw, 1.8rem); margin-bottom: 1rem;">¿Quieres ser parte del cambio?</h3>
-                <p style="margin-bottom: 1rem;">
+                <h3>🌟 ¿Quieres ser parte del cambio?</h3>
+                <p>
                     Únete a nuestra iniciativa y ayuda a crear un futuro más sostenible para Santa Isabel. 
-                    Tu participación puede marcar la diferencia.
+                    <strong>Tu participación puede marcar la diferencia.</strong>
                 </p>
                 <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
                     <a href="https://docs.google.com/forms/d/e/1FAIpQLSeXI2HAs2kX74P5KkGsw5FERGXF7UO_sZ-UkRGHHC__T3_duw/viewform?usp=header" target="_blank" class="survey-btn">
-                        Participa en la Encuesta
+                        <i class="fas fa-clipboard-check"></i> Participa en la Encuesta
                     </a>
+                </div>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdYORlDhG4zuIFuosW3cTZle77U6FY6SqF3xapSe2UYc4MOZA/viewform?usp=header" target="_blank" class="survey-btn">
+                        <i class="fas fa-clipboard-check"></i> Prueba de Salida
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Meeting Section - NUEVA SECCIÓN -->
+    <section id="reunion" class="meeting-section">
+        <div class="container">
+            <h2 class="section-title fade-in">👥 Reunión de Concientización</h2>
+            <p class="section-subtitle fade-in">
+                Nuestra reunión comunitaria para sensibilizar sobre el uso responsable de la energía eléctrica
+            </p>
+
+            <div class="meeting-card fade-in">
+                <div class="meeting-header">
+                    <h3>🌍 Jornada de Concientización Ambiental</h3>
+                    <div class="meeting-date">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>27 de Septiembre, 2025</span>
+                    </div>
+                </div>
+
+                <div class="meeting-content">
+                    <div class="meeting-image-container">
+                        <img src="8.jpg" alt="Reunión de Concientización del 27 de Septiembre" loading="lazy">
+                    </div>
+
+                    <div class="meeting-description">
+                        <h4>📢 Sobre la Reunión</h4>
+                        <p>
+                            El 27 de septiembre de 2025 se llevó a cabo una importante reunión de concientización 
+                            en la Urbanización Santa Isabel, donde miembros de la comunidad se reunieron para 
+                            aprender sobre el <strong>uso responsable y eficiente de la energía eléctrica</strong>. 
+                            Durante este encuentro, se compartieron experiencias, se discutieron estrategias de ahorro 
+                            energético y se reforzó el compromiso de la comunidad hacia un futuro más sostenible. 
+                            Esta jornada marcó un hito importante en nuestro proyecto de responsabilidad social, 
+                            fortaleciendo los lazos comunitarios y generando conciencia sobre la importancia de 
+                            cuidar nuestros recursos naturales.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -906,47 +1493,63 @@
         <div class="container">
             <div class="footer-content">
                 <div>
-                    <h3 style="font-size: clamp(1.2rem, 3vw, 1.5rem); margin-bottom: 1rem;">Proyecto de Responsabilidad Social</h3>
-                    <p style="margin-bottom: 1rem; opacity: 0.9;">
+                    <h3 style="font-size: clamp(1.3rem, 3vw, 1.6rem); margin-bottom: 1rem; font-weight: 800;">
+                        🌱 Proyecto de Responsabilidad Social
+                    </h3>
+                    <p style="margin-bottom: 1.5rem; opacity: 0.95; line-height: 1.7;">
                         Nuestro compromiso es crear una comunidad más consciente y sostenible en la 
-                        Urbanización Santa Isabel. Juntos podemos lograr un futuro más verde y eficiente.
+                        Urbanización Santa Isabel. <strong>Juntos podemos lograr un futuro más verde y eficiente.</strong>
                     </p>
-                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-                        <span style="background: rgba(142, 168, 91, 0.2); color: hsl(var(--primary)); padding: 0.5rem 1rem; border-radius: 1rem; font-size: 0.9rem;">Eficiencia Energética</span>
-                        <span style="background: rgba(52, 152, 219, 0.2); color: hsl(var(--secondary)); padding: 0.5rem 1rem; border-radius: 1rem; font-size: 0.9rem;">Educación Ambiental</span>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
+                        <span style="background: rgba(142, 168, 91, 0.25); color: hsl(var(--primary-light)); padding: 0.6rem 1.2rem; border-radius: 1.5rem; font-size: 0.95rem; font-weight: 600; border: 1px solid rgba(142, 168, 91, 0.3);">
+                            ⚡ Eficiencia Energética
+                        </span>
+                        <span style="background: rgba(52, 152, 219, 0.25); color: hsl(var(--secondary-light)); padding: 0.6rem 1.2rem; border-radius: 1.5rem; font-size: 0.95rem; font-weight: 600; border: 1px solid rgba(52, 152, 219, 0.3);">
+                            📚 Educación Ambiental
+                        </span>
                     </div>
                 </div>
                 <div>
-                    <h3 style="font-size: clamp(1rem, 3vw, 1.2rem); margin-bottom: 1rem;">Información de Contacto</h3>
+                    <h3 style="font-size: clamp(1.1rem, 3vw, 1.3rem); margin-bottom: 1.5rem; font-weight: 800;">
+                        📞 Información de Contacto
+                    </h3>
                     <div class="contact-item">
-                        <span>📧</span>
+                        <i class="fas fa-envelope"></i>
                         <div>
                             <p style="font-size: 0.9rem; opacity: 0.8;">Email:</p>
-                            <p style="font-weight: 500;">engyrewbl@gmail.com</p>
+                            <p style="font-weight: 600; font-size: 1.05rem;">engyrewbl@gmail.com</p>
                         </div>
                     </div>
                     <div class="contact-item">
-                        <span>📍</span>
+                        <i class="fas fa-map-marker-alt"></i>
                         <div>
                             <p style="font-size: 0.9rem; opacity: 0.8;">Ubicación:</p>
-                            <p style="font-weight: 500;">Urb. Santa Isabel, Carabayllo</p>
+                            <p style="font-weight: 600; font-size: 1.05rem;">Urb. Santa Isabel, Carabayllo</p>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <div style="border-top: 1px solid rgba(255, 255, 255, 0.2); padding-top: 1.5rem; text-align: center;">
-                <p style="margin-bottom: 0.75rem; opacity: 0.8;">
-                    Desarrollado con ❤️ para nuestra comunidad
+            <div style="border-top: 1px solid rgba(255, 255, 255, 0.15); padding-top: 2rem; text-align: center;">
+                <p style="margin-bottom: 1rem; opacity: 0.9; font-size: 1.05rem;">
+                    Desarrollado con <span style="color: #ff6b6b; font-size: 1.2rem;">❤️</span> para nuestra comunidad
                 </p>
-                <p style="font-size: 0.9rem; opacity: 0.7;">
-                    <strong style="color: hsl(var(--primary));">Agradecimiento especial:</strong> A todas las familias de la 
+                <p style="font-size: 0.95rem; opacity: 0.8; line-height: 1.7;">
+                    <strong style="color: hsl(var(--primary-light)); font-size: 1.05rem;">🙏 Agradecimiento especial:</strong> A todas las familias de la 
                     Urbanización Santa Isabel que han participado activamente en este proyecto, 
                     haciendo posible un futuro más sostenible para nuestra comunidad.
+                </p>
+                <p style="margin-top: 1.5rem; font-size: 0.85rem; opacity: 0.6;">
+                    © 2025 Engyrewbl - Todos los derechos reservados
                 </p>
             </div>
         </div>
     </footer>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top" aria-label="Volver arriba">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
     <script>
         // Mobile menu toggle
@@ -981,43 +1584,66 @@
             });
         });
 
-        // Add scroll effect to header
+        // Header scroll effect
+        const header = document.querySelector('.header');
         window.addEventListener('scroll', () => {
-            const header = document.querySelector('.header');
-            header.style.background = window.scrollY > 100 ? 
-                'rgba(255, 255, 255, 0.98)' : 
-                'rgba(255, 255, 255, 0.95)';
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
         });
 
-        // Animation for statistics when in view
+        // Scroll to top button
+        const scrollTopBtn = document.querySelector('.scroll-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Animate statistics
         function animateStats() {
             const stats = document.querySelectorAll('.stat-number');
             stats.forEach(stat => {
                 const target = parseInt(stat.textContent.replace(/[^\d]/g, ''));
                 let current = 0;
-                const increment = target / 100;
+                const increment = target / 50;
                 const timer = setInterval(() => {
                     current += increment;
                     if (current >= target) {
                         current = target;
                         clearInterval(timer);
                     }
-                    stat.textContent = Math.floor(current) + (stat.textContent.includes('%') ? '%' : stat.textContent.includes('+') ? '+' : '');
-                }, 20);
+                    const suffix = stat.textContent.includes('%') ? '%' : stat.textContent.includes('+') ? '+' : '';
+                    stat.textContent = Math.floor(current) + suffix;
+                }, 30);
             });
         }
 
         // Intersection Observer for stats animation
         const statsSection = document.querySelector('.stats');
-        const observer = new IntersectionObserver((entries) => {
+        const statsObserver = new IntersectionObserver((entries) => {
             if (entries[0].isIntersecting) {
                 animateStats();
-                observer.disconnect();
+                statsObserver.disconnect();
             }
         }, { threshold: 0.5 });
-        statsSection && observer.observe(statsSection);
+        
+        if (statsSection) {
+            statsObserver.observe(statsSection);
+        }
 
-        // Intersection Observer para la animacion
+        // Intersection Observer for fade-in animations
         const fadeInObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -1030,7 +1656,7 @@
             fadeInObserver.observe(el);
         });
 
-        // Animacion para el progreso
+        // Progress bars animation
         const progressBars = document.querySelectorAll('.progress-fill');
         const progressObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -1050,10 +1676,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
